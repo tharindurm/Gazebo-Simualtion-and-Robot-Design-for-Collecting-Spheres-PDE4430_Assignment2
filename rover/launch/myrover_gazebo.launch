@@ -16,6 +16,6 @@
   </include>
  
   <!--Launch Gazebo Simulator-->
-  <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model myrover" output="screen"/>
+  <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model myrover -x .5 -y -.5 -z 1" output="screen"/>
 
 </launch>

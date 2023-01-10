@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<robot name="myrobot">
+<robot name="myrobot" xmlns:xacro = "http://www.ros.org/wiki/xacro">
 
-
+    
     <material name="blue">
         <color rgba="0 0 0.8 1"/>
     </material>
@@ -19,9 +19,142 @@
     </material>
 
 
+    <xacro:macro name="box_inertia" params="m w h d">
+        <inertial>
+            <mass value="${m}"/>
+            <inertia ixx="${m / 12.0 * (d*d + h*h)}" ixy="0.0" ixz="0.0" iyy="${m / 12.0 * (w*w + h*h)}" iyz="0.0" izz="${m / 12.0 * (w*w + d*d)}"/>
+            </inertial>
+    </xacro:macro>
+
+    <xacro:macro name="Rectangle_Panel" params="x y z roll pitch yaw">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="3.978"/>
+            <inertia ixx="0.062083" ixy="0.0" ixz="0.0"
+                     iyy="0.020833" iyz="-0.0"
+                     izz="0.042083"/>
+        </inertial>
+        <visual>
+            <origin xyz="${x} ${y} ${z}" rpy="${roll} ${pitch} ${yaw}" />
+            <geometry>
+                <box size="0.35 0.02 0.35" />
+            </geometry>
+            <material name="blue" />    
+        </visual>
+        <collision>
+            <origin xyz="${x} ${y} ${z}" rpy="${roll} ${pitch} ${yaw}" />
+            <geometry>
+                <box size="0.35 0.02 0.35" />
+            </geometry>
+            <material name="blue" />
+        </collision>
+    </xacro:macro>
+
+    <xacro:macro name="Wheel" params="prefix x y z roll pitch yaw">
+        <link name="${prefix}_wheel">
+            <visual>
+                <geometry>
+                    <cylinder length="0.03" radius="0.125"/>
+                </geometry>
+                <origin xyz="${x} ${y} ${z}" rpy="${roll} ${pitch} ${yaw}"/>
+                <material name="green"/>
+            </visual>
+            <collision>
+                <origin xyz="${x} ${y} ${z}" rpy="${roll} ${pitch} ${yaw}" />
+                <geometry>
+                    <cylinder length="0.03" radius="0.125"/>
+                </geometry>
+                <material name="green" />
+            </collision>
+            <inertial>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <mass value="3.978"/>
+                <inertia ixx="0.021858680" ixy="0.0" ixz="0.010020353"
+                        iyy="0.078572349" iyz="-0.0"
+                        izz="0.091971324"/>
+            </inertial>
+        </link>
+    </xacro:macro>
+
+
+
+    <xacro:property name="DoorWidth" value="0.20" />
+    <xacro:property name="DoorThickness" value="0.03" />
+    <xacro:property name="DoorHeight" value="0.2" />
+
+    <xacro:macro name="Door_Panel" params="x y z roll pitch yaw">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1.0"/>
+            <inertia ixx="0.062083" ixy="0.0" ixz="0.0"
+                     iyy="0.020833" iyz="-0.0"
+                     izz="0.042083"/>
+        </inertial>
+        <visual>
+            <origin xyz="${x} ${y} ${z}" rpy="${roll} ${pitch} ${yaw}" />
+            <geometry>
+                <box size="${DoorWidth} ${DoorThickness} ${DoorHeight}" />
+            </geometry>
+            <material name="blue" />    
+        </visual>
+        <collision>
+            <origin xyz="${x} ${y} ${z}" rpy="${roll} ${pitch} ${yaw}" />
+            <geometry>
+                <box size="${DoorWidth} ${DoorThickness} ${DoorHeight}" />
+            </geometry>
+            <material name="blue" />
+        </collision>
+    </xacro:macro>
+
+
+
+   <!--
+    <link name="base_footprint">
+        <xacro:box_inertia m="20" w="0.001" h="0.001" d="0.001"/>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+    </link>
+    -->
+    <link name="base_link">
+        <xacro:Rectangle_Panel x="0.0" y="0.175" z="0.215" roll="0.0" pitch="0.0" yaw="0"/>
+        <xacro:Rectangle_Panel x="0.0" y="-0.175" z="0.215" roll="0.0" pitch="0.0" yaw="0"/>
+        <xacro:Rectangle_Panel x="-0.175" y="0.0" z="0.215" roll="0.0" pitch="0.0" yaw="1.5708"/>
+    </link>
+
     
+    <xacro:Wheel prefix="right" x="0.075" y="-0.200" z="0.125" roll="1.5708" pitch="0.0" yaw="0"/>
+    <xacro:Wheel prefix="left" x="0.075" y="0.200" z="0.125" roll="1.5708" pitch="0.0" yaw="0"/>
+
+
+
     
 
+
+    <joint name = "right_wheel_joint"  type = "continuous">
+        <parent link="base_link"/>
+        <child link="right_wheel"/>
+        <origin xyz="0.200 0 0" rpy="0 0 0" />
+        <axis xyz="0 1 0" rpy="0 0 0" />
+    </joint>
+    <joint name = "left_wheel_joint"  type = "continuous">
+        <parent link="base_link"/>
+        <child link="left_wheel"/>
+        <origin xyz="0.200 0 0" rpy="0 0 0" />
+        <axis xyz="0 1 0" rpy="0 0 0" />
+    </joint>
+    <!--
+    <joint name="base_link_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <parent link="base_footprint"/>
+        <child link="base_link" />
+    </joint>
+    -->
+
+<!--
     <link name = "base_link">
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -29,9 +162,9 @@
             <inertia ixx="0.021858680" ixy="0.0" ixz="0.010020353"
                     iyy="0.078572349" iyz="-0.0"
                     izz="0.091971324"/>
-        </inertial>
+        </inertial>37
 
-        <!--Right Panel-->
+        
         <visual>
             <origin xyz="0 -0.25 0.35" rpy="0 0 0" />
             <geometry>
@@ -47,7 +180,8 @@
             <material name="blue" />
         </collision>
         
-        <!--Left Panel-->
+      
+
         <visual>
             <origin xyz="0 0.25 0.35" rpy="0 0 0" />
             <geometry>
@@ -63,7 +197,8 @@
             <material name="blue" />
         </collision>
 
-        <!--Back Panel-->
+       
+
         <visual>
             <origin xyz="-0.25 0 0.35" rpy="0 0 1.57" />
             <geometry>
@@ -79,14 +214,14 @@
             <material name="blue" />
         </collision>
     </link>
+-->
 
 
 
 
 
 
-
-    <!--Right Wheel-->
+    <!--
     <link name="right_wheel">
         <visual>
             <geometry>
@@ -119,12 +254,12 @@
         <origin xyz="0.15 0.315 0.1" rpy="0 0 0" />
         <axis xyz="0 1 0" rpy="0 0 0" />
     </joint>
+Right Wheel-->
 
 
 
 
-
-    <!--Left Wheel-->
+    <!--Left 
     <link name="left_wheel">
         <visual>
             <geometry>
@@ -156,9 +291,9 @@
         <origin xyz="0.15 -0.315 0.1" rpy="0 0 0" />
         <axis xyz="0 1 0" rpy="0 0 0" />
     </joint>
+Wheel-->
 
-
-    <!--Caster wheel-->
+    <!--Caster 
     <link name="caster">
         <visual>
             <geometry>
@@ -183,7 +318,7 @@
         <axis xyz="0 1 0" rpy="0 0 0" />
     </joint>
 
-
+wheel-->
 
   <gazebo>
     <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
