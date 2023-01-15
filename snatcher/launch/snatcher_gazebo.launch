@@ -1,6 +1,6 @@
 <launch>
  
-  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find rover)/urdf/myrover.urdf.xacro"/>  
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find snatcher)/urdf/snatcher.urdf.xacro"/>  
  
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
  
@@ -16,6 +16,6 @@
   </include>
  
   <!--Launch Gazebo Simulator-->
-  <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model myrover -x .5 -y -.5 -z 1" output="screen"/>
+  <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model snatcher -x .5 -y -.5 -z 1" output="screen"/>
 
 </launch>
