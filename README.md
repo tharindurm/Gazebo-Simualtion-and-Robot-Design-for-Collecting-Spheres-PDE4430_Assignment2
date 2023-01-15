@@ -165,8 +165,8 @@ Run the launch file to open assignment_world with the snatcher robot in it.
 
 Once it is loaded, turtlebot3_teleop_key should be loaded in order to move the robot.
 
-The robot can successfully bring the spheres in to the body cavity without any collisions.
-Even without the door panels to stop the spheres rolling out, with precise
+The robot can successfully bring the spheres in to the body cavity without any collisions. This is because the collision tags parameters are similar to the visual tag parameters. What is visible of the robot is also the collision regions.
+Despite not having door panels to stop the spheres rolling out, with precise
  movements of the robot, the spheres can be brought in to the pen.
 
 ## Author
