@@ -37,10 +37,8 @@ roslaunch myrobot myrobot_gazebo_world.launch
 ```
 
 ## Robot Development approach
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
 
-
-
+![App Screenshot](./Images/collision.jpg)
 
 ### Robot Type
 To keep the development procedure simple, it was decided to build a differential drive
@@ -85,7 +83,7 @@ The caster wheels are attached to the body via fixed joint but works as a suppor
 for the body as they dont have friction.
 The door panales are fixed to the body as revolute joints.
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![App Screenshot](./Images/Joints.jpg)
 
 
 #### Finding XACRO errors
@@ -120,7 +118,7 @@ robot has the map, in order to identify the objects around while moving, the sam
 #### SLAM Algorithm
 Since the robot is only equipped with a LIDAR, Hector Slam
 is selected to generate the map of the environment and localize.
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![App Screenshot](./Images/Map.jpg)
 
 
 
@@ -130,8 +128,6 @@ is selected to generate the map of the environment and localize.
 RViz is a visualizing software which can be used to visualize data in computational forms.
 This is specially useful to understand the data being published in to different topics at the same time.
 In this coursework, this tool is used to visualize topics such as `/odom`,`/tf`,`/scan`,`/robot_description`. 
-
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
 
 
 ## Gazebo
